@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "./static/css/main.18180b87.css",
+    "main.js": "./static/js/main.750075ab.js",
+    "static/media/Logo-phone-version.svg": "./static/media/Logo-phone-version.c1cd703f0f646cc2749b7a9dde958218.svg",
+    "static/media/Mont-Regular.otf": "./static/media/Mont-Regular.1d26d89f7339866d3133.otf",
+    "static/media/Mont-SemiBold.otf": "./static/media/Mont-SemiBold.8979d71a3146ca1d761f.otf",
+    "static/media/Mont-Bold.otf": "./static/media/Mont-Bold.03c8c2f6127c1da0fc39.otf",
+    "static/media/icons.svg": "./static/media/icons.dce469b8e1d229a4f2c218ff3f5e0c30.svg",
+    "index.html": "./index.html",
+    "main.18180b87.css.map": "./static/css/main.18180b87.css.map",
+    "main.750075ab.js.map": "./static/js/main.750075ab.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.18180b87.css",
+    "static/js/main.750075ab.js"
+  ]
+}
