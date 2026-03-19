@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.0bc8dfac.css",
-    "main.js": "./static/js/main.750a298f.js",
+    "main.js": "./static/js/main.c6d960e2.js",
     "static/media/Logo.svg": "./static/media/Logo.b7c5fe785db851b77708b916ce547eba.svg",
     "static/media/Logo-phone-version.svg": "./static/media/Logo-phone-version.97a81e01f23d3509b06ed63b01bd5277.svg",
     "static/media/Mont-Regular.otf": "./static/media/Mont-Regular.1d26d89f7339866d3133.otf",
@@ -10,10 +10,10 @@
     "static/media/icons.svg": "./static/media/icons.f3598fee37cecb7389ac3c5ff77c5bda.svg",
     "index.html": "./index.html",
     "main.0bc8dfac.css.map": "./static/css/main.0bc8dfac.css.map",
-    "main.750a298f.js.map": "./static/js/main.750a298f.js.map"
+    "main.c6d960e2.js.map": "./static/js/main.c6d960e2.js.map"
   },
   "entrypoints": [
     "static/css/main.0bc8dfac.css",
-    "static/js/main.750a298f.js"
+    "static/js/main.c6d960e2.js"
   ]
 }
