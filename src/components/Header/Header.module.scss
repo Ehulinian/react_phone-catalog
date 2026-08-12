@@ -57,6 +57,7 @@
 .headerFavouriteBtn {
   position: relative;
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -122,6 +123,7 @@
 
 .headerMenuIcon {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: 48px;
@@ -140,6 +142,7 @@
 .headerCloseIcon {
   position: relative;
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: 48px;
@@ -158,6 +161,7 @@
 .headerCartIcon {
   position: relative;
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   border-left: 1px solid var(--border-header-color);
@@ -217,6 +221,7 @@
 .themeToggleBtn {
   position: relative;
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   background: none;
   justify-content: center;

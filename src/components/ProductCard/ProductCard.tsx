@@ -1,10 +1,14 @@
 import cn from 'classnames';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import icons from '../../assets/icons/icons.svg';
 import { Product } from '../../types/Product';
 import styles from './ProductCard.module.scss';
-import { ProductsContext } from '../../store/ProductsContext';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from '../../store/favorites/favoritesSlice';
 import { Button } from '../UI/Button';
 
 interface ProductCardProps {
@@ -20,8 +24,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   imageWrapperSize,
   classNames,
 }) => {
-  const { SetAddToFavorites, SetRemoveFromFavorites, favorites } =
-    useContext(ProductsContext);
+  const dispatch = useAppDispatch();
+  const favorites = useAppSelector(state => state.favorites.items);
 
   const imageWrapperClass = cn(styles.imageWrapper, {
     [styles.wrapperSmall]: imageWrapperSize === 'small',
@@ -32,9 +36,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   const handleToggleFavorite = () => {
     if (isFavorite) {
-      SetRemoveFromFavorites(product.id);
+      dispatch(removeFromFavorites(product.id));
     } else {
-      SetAddToFavorites(product);
+      dispatch(addToFavorites(product));
     }
   };
 

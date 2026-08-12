@@ -1,12 +1,11 @@
-import { useContext } from 'react';
-import { ProductsContext } from '../../store/ProductsContext';
+import { useAppSelector } from '../../store/hooks';
 import { ProductCard } from '../ProductCard';
 import styles from './Favorites.module.scss';
 import icons from '../../assets/icons/icons.svg';
 import { useNavigate } from 'react-router-dom';
 
 export const Favorites = () => {
-  const { favorites } = useContext(ProductsContext);
+  const favorites = useAppSelector(state => state.favorites.items);
   const navigate = useNavigate();
 
   return (

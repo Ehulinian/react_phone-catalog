@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { ProductsContext } from '../../store/ProductsContext';
+import React from 'react';
+import { useAppSelector } from '../../store/hooks';
 import styles from './Cart.module.scss';
 import { useNavigate } from 'react-router-dom';
 import icons from '../../assets/icons/icons.svg';
@@ -8,23 +8,13 @@ import { CartProd } from '../CartProduct';
 import { Checkout } from '../UI/Checkout';
 
 const Cart: React.FC = () => {
-  const { cart, SetClearCart } = useContext(ProductsContext);
+  const cart = useAppSelector(state => state.cart.items);
   const navigate = useNavigate();
 
   const totalPrice = cart.reduce(
     (total, item) => total + item.quantity * item.price,
     0,
   );
-
-  const handleCheckout = () => {
-    const userConfirmed = window.confirm(
-      'Checkout is not implemented yet. Do you want to clear the Cart?',
-    );
-
-    if (userConfirmed) {
-      SetClearCart();
-    }
-  };
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -60,7 +50,7 @@ const Cart: React.FC = () => {
             <h3> ${totalPrice}</h3>
             <p className={styles.totalFor}>Total for {totalItems} items</p>
 
-            <Checkout onClear={handleCheckout} />
+            <Checkout cart={cart} />
           </div>
         </div>
       )}

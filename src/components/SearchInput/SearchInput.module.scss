@@ -1,26 +1,73 @@
+@import '../../styles/mixins';
+
 .searchWrapper {
   position: relative;
   display: flex;
+  flex-shrink: 0;
   align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 100%;
   border-right: 1px solid var(--border-header-color);
+  transition: width 0.25s ease-in-out;
+
+  &.expanded {
+    width: 200px;
+
+    .iconSearch {
+      left: 8px;
+    }
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    background: rgba(241, 242, 249, 1);
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    transition: all 0.3s ease-in-out;
+
+    @include on-phone {
+      display: none;
+    }
+  }
+
+  &:hover::after,
+  &:focus-within::after {
+    width: 100%;
+    background: var(--text-color);
+  }
 }
 
 .headerSearchInput {
-  max-width: 200px;
-  padding: 6px 20px;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  padding: 0 8px 0 32px;
   color: var(--text-color);
   border: none;
   outline: none;
   background: none;
   font-size: 12px;
-  transition: all 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
+  &:hover {
+    background-color: var(--gray-elements);
+  }
+
   &:focus {
     outline: none;
     color: var(--text-color);
+    cursor: auto;
+    background-color: var(--gray-elements);
 
     &::placeholder {
       color: var(--gray-secondary);
@@ -42,35 +89,44 @@
 .clearButton {
   width: 16px;
   height: 16px;
-  fill: var(--text-color);
   position: absolute;
-  right: 6px;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.2s ease;
 }
 
 .iconSearch {
   position: absolute;
-  right: 6px;
-  width: 16px;
-  height: 16px;
-  padding: 0;
-  fill: var(--text-color);
-}
-.iconClear {
-  position: absolute;
-  right: 1px;
-  top: 0;
+  top: 50%;
+  transform: translateY(-50%);
   width: 16px;
   height: 16px;
   padding: 0;
   color: var(--text-color);
+  opacity: 1;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
 }
 
-@media (min-width: 640px) and (max-width: 740px) {
-  .headerSearchInput {
-    max-width: 55px;
+.iconHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.iconClear {
+  width: 16px;
+  height: 16px;
+  fill: var(--text-color);
+}
+
+@media (max-width: 739px) {
+  .searchWrapper.expanded {
+    width: 160px;
   }
 }

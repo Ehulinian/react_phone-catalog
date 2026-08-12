@@ -1,6 +1,6 @@
 import React from 'react';
 import { images } from '../../assets/images';
-import { BannerSlider } from '../BannerSLider';
+import { BannerSlider } from '../BannerSlider';
 import { Container } from '../Container';
 import styles from './Intro.module.scss';
 

@@ -1,8 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import styles from './CartProduct.module.scss';
 import icons from '../../assets/icons/icons.svg';
-import { ProductsContext } from '../../store/ProductsContext';
+import { useAppDispatch } from '../../store/hooks';
+import { removeFromCart, updateQuantity } from '../../store/cart/cartSlice';
 import { CartProducts } from '../../types/CartProduct';
 import { Link } from 'react-router-dom';
 
@@ -11,14 +12,23 @@ type CartProductProps = {
 };
 
 export const CartProd: React.FC<CartProductProps> = ({ product }) => {
-  const { SetUpdateQuantity, SetRemoveFromCart } = useContext(ProductsContext);
+  const dispatch = useAppDispatch();
   const [isRemoving, setIsRemoving] = useState(false);
+  const removeTimerRef = useRef<ReturnType<typeof setTimeout>>();
+
+  useEffect(() => {
+    return () => {
+      if (removeTimerRef.current) {
+        clearTimeout(removeTimerRef.current);
+      }
+    };
+  }, []);
 
   const handleRemove = (id: string) => {
     setIsRemoving(true);
 
-    setTimeout(() => {
-      SetRemoveFromCart(id);
+    removeTimerRef.current = setTimeout(() => {
+      dispatch(removeFromCart(id));
     }, 500);
   };
 
@@ -27,7 +37,7 @@ export const CartProd: React.FC<CartProductProps> = ({ product }) => {
       return;
     }
 
-    SetUpdateQuantity(id, newQuantity);
+    dispatch(updateQuantity({ id, quantity: newQuantity }));
   };
 
   const increaseQuantity = (id: string, quantity: number) => {

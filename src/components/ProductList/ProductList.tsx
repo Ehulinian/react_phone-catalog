@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { ProductCard } from '../ProductCard';
 import { Product } from '../../types/Product';
 import styles from './ProductList.module.scss';
@@ -15,13 +15,33 @@ export const ProductList: React.FC<ProductListProps> = ({
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const page = +(searchParams.get('page') || 1);
+  const pageParam = +(searchParams.get('page') || 1);
   const perPage = +(searchParams.get('perPage') || PerPageOption.Sixteen);
 
   const totalPages =
     perPage === PerPageOption.All
       ? 1
-      : Math.ceil(filteredProducts.length / perPage);
+      : Math.max(1, Math.ceil(filteredProducts.length / perPage));
+
+  // The URL's `page` can point past the end once the list shrinks — e.g. the
+  // user is on page 4 and then types a search term that only matches 2
+  // products. Without clamping, the slice below would come back empty and
+  // show "No products available" even though matches exist on an earlier
+  // page.
+  const page = Math.min(Math.max(pageParam, 1), totalPages);
+
+  // Keep the URL in sync once we've clamped — otherwise the address bar
+  // would still say `page=5` while page 1 is what's actually shown, which
+  // breaks the back button and link sharing.
+  useEffect(() => {
+    if (pageParam !== page) {
+      setSearchParams({
+        ...Object.fromEntries(searchParams),
+        page: page.toString(),
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageParam, page]);
 
   const visibleProducts = useMemo(() => {
     if (perPage === PerPageOption.All) {

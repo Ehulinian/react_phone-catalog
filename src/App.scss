@@ -18,3 +18,13 @@
     padding-bottom: 80px;
   }
 }
+
+.loadErrorMessage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+  text-align: center;
+  color: var(--color-text-secondary, #8d8d92);
+}

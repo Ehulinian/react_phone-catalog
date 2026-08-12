@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './RecommendedProducts.module.scss';
-import { RecomendedSlider } from '../RecommendedSlider';
+import { RecommendedSlider } from '../RecommendedSlider';
 import { Product } from '../../types/Product';
 
 type Props = {
@@ -16,7 +16,7 @@ export const RecommendedProducts: React.FC<Props> = ({
         <div className={styles.wrapper}>
           <h2 className={styles.sectionTitle}>You may also like</h2>
         </div>
-        <RecomendedSlider recommendedProducts={recommendedProducts} />
+        <RecommendedSlider recommendedProducts={recommendedProducts} />
       </div>
     </section>
   );

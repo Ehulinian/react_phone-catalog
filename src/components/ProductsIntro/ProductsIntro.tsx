@@ -1,6 +1,5 @@
-import { useContext } from 'react';
 import styles from './ProductsIntro.module.scss';
-import { ProductsContext } from '../../store/ProductsContext';
+import { useGetProductsQuery } from '../../store/products/productsApi';
 import { Breadcrumbs } from '../../components/Breadcrumbs';
 
 type Props = {
@@ -8,7 +7,7 @@ type Props = {
 };
 
 export const ProductsIntro: React.FC<Props> = ({ category }) => {
-  const { products } = useContext(ProductsContext);
+  const { data: products = [] } = useGetProductsQuery();
 
   const filteredProducts = products.filter(
     product => product.category.toLowerCase() === category.toLowerCase(),

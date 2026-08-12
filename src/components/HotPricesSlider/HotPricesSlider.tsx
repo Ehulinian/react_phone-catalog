@@ -1,15 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import 'swiper/css';
+import { Swiper as SwiperType } from 'swiper';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { ProductsContext } from '../../store/ProductsContext';
+import { useGetProductsQuery } from '../../store/products/productsApi';
 import { ProductCard } from '../ProductCard';
 import icons from '../../assets/icons/icons.svg';
 import styles from './HotPricesSlider.module.scss';
 import { Category } from '../../types/Category';
 
 export const HotPricesSlider: React.FC = () => {
-  const { products } = useContext(ProductsContext);
+  const { data: products = [] } = useGetProductsQuery();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const hotPriceModels = products.filter(
@@ -45,8 +46,8 @@ export const HotPricesSlider: React.FC = () => {
           </div>
 
           <Swiper
-            onSlideChange={({ activeIndex: newIndex }: any) => {
-              setActiveIndex(newIndex);
+            onSlideChange={(swiper: SwiperType) => {
+              setActiveIndex(swiper.activeIndex);
             }}
             grabCursor={true}
             spaceBetween={16}

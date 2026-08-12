@@ -1,10 +1,14 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Product, ProductSpecs } from '../../types/Product';
 import styles from './ProductDetails.module.scss';
 import icons from '../../assets/icons/icons.svg';
 import { Button } from '../UI/Button';
-import { ProductsContext } from '../../store/ProductsContext';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from '../../store/favorites/favoritesSlice';
 import classNames from 'classnames';
 import { colorMapping } from '../../constants/colors';
 
@@ -13,6 +17,15 @@ type Props = {
   product: Product;
   productVariants: ProductSpecs[];
 };
+
+// The dataset spells the same color inconsistently across records, e.g. a
+// product's own `color` field says "space-gray" while another variant's
+// `colorsAvailable` list says "space gray" for the very same color. Comparing
+// on lowercase alone (as before) missed this, so picking that swatch found
+// no matching variant and silently did nothing. Stripping spaces/hyphens
+// makes "space gray", "space-gray" and "spacegray" compare equal.
+const normalizeColor = (value: string) =>
+  value.toLowerCase().replace(/[\s-]+/g, '');
 
 export const ProductDetails: React.FC<Props> = ({
   productDetails,
@@ -23,8 +36,8 @@ export const ProductDetails: React.FC<Props> = ({
     useState<ProductSpecs>(productDetails);
   const [displayedImageIndex, setDisplayedImageIndex] = useState<number>(0);
 
-  const { favorites, SetRemoveFromFavorites, SetAddToFavorites } =
-    useContext(ProductsContext);
+  const dispatch = useAppDispatch();
+  const favorites = useAppSelector(state => state.favorites.items);
 
   const navigate = useNavigate();
 
@@ -38,16 +51,16 @@ export const ProductDetails: React.FC<Props> = ({
 
   const handleToggleFavorite = () => {
     if (isFavorite) {
-      SetRemoveFromFavorites(product.id);
+      dispatch(removeFromFavorites(product.id));
     } else {
-      SetAddToFavorites(product);
+      dispatch(addToFavorites(product));
     }
   };
 
   const handleColorChange = (newColor: string) => {
     const matchedVariant = productVariants.find(
       v =>
-        v.color.toLowerCase() === newColor.toLowerCase() &&
+        normalizeColor(v.color) === normalizeColor(newColor) &&
         v.capacity === currentVariant.capacity &&
         v.namespaceId === currentVariant.namespaceId,
     );
@@ -154,7 +167,8 @@ export const ProductDetails: React.FC<Props> = ({
                       <div
                         key={col}
                         className={classNames(styles.wrapperColor, {
-                          [styles.active]: col === color,
+                          [styles.active]:
+                            normalizeColor(col) === normalizeColor(color),
                         })}
                         onClick={() => handleColorChange(col)}
                       >

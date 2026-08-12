@@ -2,13 +2,13 @@ import styles from './ItemsOnPage.module.scss';
 import icons from '../../../assets/icons/icons.svg';
 import { PerPageOption } from '../../../types/Sort';
 import { useSearchParams } from 'react-router-dom';
-import { getSearchWith } from '../../../utils/searchHelper';
+import { getSearchWith, SearchParams } from '../../../utils/searchHelper';
 
 export const ItemsOnPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const perPage = +(searchParams.get('perPage') || PerPageOption.Sixteen);
 
-  function setSearchWith(params: any) {
+  function setSearchWith(params: SearchParams) {
     const search = getSearchWith(searchParams, params);
 
     setSearchParams(search);
@@ -16,8 +16,8 @@ export const ItemsOnPage = () => {
 
   const handlePerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSearchWith({
-      perPage: +e.target.value,
-      page: 1,
+      perPage: e.target.value,
+      page: '1',
     });
   };
 

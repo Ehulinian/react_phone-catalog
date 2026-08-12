@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import icons from '../../assets/icons/icons.svg';
 import logoDark from '../../assets/images/Logo-phone-version.svg';
@@ -6,7 +6,7 @@ import logoLight from '../../assets/images/Logo.svg';
 
 import styles from './Header.module.scss';
 import { MobileMenu } from '../MobileMenu';
-import { ProductsContext } from '../../store/ProductsContext';
+import { useAppSelector } from '../../store/hooks';
 import CartIcon from '../Counter/Counter';
 import { useTheme } from '../../store/ThemeContext';
 import { SearchInput } from '../SearchInput';
@@ -26,7 +26,8 @@ const getNavLinkCart = ({ isActive }: { isActive: boolean }) =>
 
 export const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { cart, favorites } = useContext(ProductsContext);
+  const cart = useAppSelector(state => state.cart.items);
+  const favorites = useAppSelector(state => state.favorites.items);
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
 
@@ -115,7 +116,7 @@ export const Header: React.FC = () => {
             </svg>
           </button>
 
-          <NavLink to="/catalog" className={getNavLinkFav}>
+          <NavLink to="/favorites" className={getNavLinkFav}>
             <svg className={styles.icon}>
               <use href={`${icons}#header-icon-header`} />
             </svg>

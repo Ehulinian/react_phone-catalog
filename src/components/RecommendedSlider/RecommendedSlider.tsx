@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import 'swiper/css';
+import { Swiper as SwiperType } from 'swiper';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { ProductCard } from '../ProductCard';
@@ -11,7 +12,7 @@ type Props = {
   recommendedProducts: Product[];
 };
 
-export const RecomendedSlider: React.FC<Props> = ({ recommendedProducts }) => {
+export const RecommendedSlider: React.FC<Props> = ({ recommendedProducts }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const isRegularShow = recommendedProducts.some(
@@ -42,8 +43,8 @@ export const RecomendedSlider: React.FC<Props> = ({ recommendedProducts }) => {
           </div>
 
           <Swiper
-            onSlideChange={({ activeIndex: newIndex }: any) => {
-              setActiveIndex(newIndex);
+            onSlideChange={(swiper: SwiperType) => {
+              setActiveIndex(swiper.activeIndex);
             }}
             grabCursor={true}
             spaceBetween={16}

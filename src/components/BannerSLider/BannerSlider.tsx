@@ -32,7 +32,7 @@ export const BannerSlider: React.FC<SliderProps> = ({
       <div className={styles.swiperWrapper}>
         <Swiper
           onSwiper={setSwiperInstance}
-          onSlideChange={(swiper: any) => {
+          onSlideChange={(swiper: SwiperType) => {
             setActiveIndex(swiper.realIndex);
           }}
           spaceBetween={16}

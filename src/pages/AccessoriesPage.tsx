@@ -1,14 +1,15 @@
-import { useContext } from 'react';
 import { Container } from '../components/Container';
 import { ProductList } from '../components/ProductList';
 import { ProductsIntro } from '../components/ProductsIntro';
-import { ProductControls } from '../components/UI/ProductsContols';
-import { ProductsContext } from '../store/ProductsContext';
+import { ProductControls } from '../components/UI/ProductsControls';
 import { Category } from '../types/Category';
-import { useCategoryProducts } from '../hooks/useFilteredProducts';
+import { useAppSelector } from '../store/hooks';
+import { useGetProductsQuery } from '../store/products/productsApi';
+import { useCategoryProducts } from '../hooks/useCategoryProducts';
 
 export const AccessoriesPage = () => {
-  const { products, searchTerm } = useContext(ProductsContext);
+  const { data: products = [] } = useGetProductsQuery();
+  const searchTerm = useAppSelector(state => state.search.term);
   const category = Category.Accessories;
 
   const { displayedProducts } = useCategoryProducts(products, category);

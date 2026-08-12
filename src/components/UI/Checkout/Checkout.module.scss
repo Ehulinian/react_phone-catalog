@@ -31,4 +31,16 @@
     left: 50%;
     transform: translateX(-50%);
   }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.checkoutError {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #ff3b30;
+  text-align: center;
 }

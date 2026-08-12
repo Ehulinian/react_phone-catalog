@@ -1,6 +1,6 @@
-import { useContext } from 'react';
 import styles from './Button.module.scss';
-import { ProductsContext } from '../../../store/ProductsContext';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { addToCart, removeFromCart } from '../../../store/cart/cartSlice';
 import { CartProducts } from '../../../types/CartProduct';
 import { Product } from '../../../types/Product';
 
@@ -10,23 +10,22 @@ interface ButtonProps {
 }
 
 export const Button: React.FC<ButtonProps> = ({ product, className }) => {
-  const { SetAddToCart, SetRemoveFromCart, cart } = useContext(ProductsContext);
-  const handleCartAction = () => {
-    const isInCart = cart.some(item => item.id === product.id);
+  const dispatch = useAppDispatch();
+  const cart = useAppSelector(state => state.cart.items);
+  const isInCart = cart.some(item => item.id === product.id);
 
+  const handleCartAction = () => {
     if (isInCart) {
-      SetRemoveFromCart(product.id);
+      dispatch(removeFromCart(product.id));
     } else {
       const cartProduct: CartProducts = {
         ...product,
         quantity: 1,
       };
 
-      SetAddToCart(cartProduct);
+      dispatch(addToCart(cartProduct));
     }
   };
-
-  const isInCart = cart.some(item => item.id === product.id);
 
   return (
     <button

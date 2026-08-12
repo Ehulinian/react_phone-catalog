@@ -2,8 +2,7 @@ import { Link, NavLink } from 'react-router-dom';
 import styles from './MobileMenu.module.scss';
 import icons from '../../assets/icons/icons.svg';
 import classNames from 'classnames';
-import { ProductsContext } from '../../store/ProductsContext';
-import { useContext } from 'react';
+import { useAppSelector } from '../../store/hooks';
 import CartIcon from '../Counter/Counter';
 import { useTheme } from '../../store/ThemeContext';
 
@@ -18,7 +17,8 @@ const getNavLinkClassName = ({ isActive }: { isActive: boolean }) =>
     : styles.mobileMenuNavLink;
 
 export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
-  const { cart, favorites } = useContext(ProductsContext);
+  const cart = useAppSelector(state => state.cart.items);
+  const favorites = useAppSelector(state => state.favorites.items);
 
   const itemCount = cart.reduce((total, item) => total + item.quantity, 0);
   const favoritesCount = favorites.length;
@@ -54,7 +54,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
 
       <div className={styles.mobileMenuIconWrapper}>
         <Link
-          to="/catalog"
+          to="/favorites"
           onClick={onClose}
           className={styles.mobileFavouriteBtn}
         >

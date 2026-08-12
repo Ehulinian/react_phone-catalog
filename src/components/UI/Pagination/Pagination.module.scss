@@ -5,26 +5,49 @@
   align-items: center;
   justify-content: center;
   padding-top: 40px;
-  gap: 16px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .arrowButtons {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .pageNumbers {
   display: flex;
+  align-items: center;
   gap: 6px;
   justify-content: center;
   flex-wrap: nowrap;
-  overflow-x: auto;
 }
 
 .dots {
-  padding: 0 6px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  color: var(--gray-secondary);
+  user-select: none;
+}
+
+@media (max-width: 480px) {
+  .paginationContainer {
+    gap: 6px;
+  }
+
+  .pageNumbers {
+    gap: 4px;
+  }
+
+  .arrowButton,
+  .pageButton,
+  .dots {
+    width: 28px;
+    height: 28px;
+  }
 }
 
 .arrowButton {
@@ -76,10 +99,8 @@
 .pageButton {
   width: 32px;
   height: 32px;
-  border: none;
   color: var(--text-color);
   cursor: pointer;
-  transition: all 0.3s;
   border: var(--btn-border);
   background: var(--btn-bg);
   transition: all 0.3s ease-in-out;
