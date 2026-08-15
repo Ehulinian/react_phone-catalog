@@ -10,6 +10,7 @@ import { useAppSelector } from '../../store/hooks';
 import CartIcon from '../Counter/Counter';
 import { useTheme } from '../../store/ThemeContext';
 import { SearchInput } from '../SearchInput';
+import { Assistant } from '../Assistant';
 
 const getNavLinkClassName = ({ isActive }: { isActive: boolean }) =>
   isActive ? `${styles.headerNavLink} ${styles.active}` : styles.headerNavLink;
@@ -26,6 +27,7 @@ const getNavLinkCart = ({ isActive }: { isActive: boolean }) =>
 
 export const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAssistantOpen, setIsAssistantOpen] = useState(false);
   const cart = useAppSelector(state => state.cart.items);
   const favorites = useAppSelector(state => state.favorites.items);
   const { theme, toggleTheme } = useTheme();
@@ -42,7 +44,7 @@ export const Header: React.FC = () => {
   }, [theme]);
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen || isAssistantOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -51,7 +53,7 @@ export const Header: React.FC = () => {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isOpen]);
+  }, [isOpen, isAssistantOpen]);
 
   const itemCount = cart.reduce((total, item) => total + item.quantity, 0);
   const favoritesCount = favorites.length;
@@ -103,6 +105,16 @@ export const Header: React.FC = () => {
           )}
 
           <button
+            className={styles.assistantBtn}
+            onClick={() => setIsAssistantOpen(true)}
+            aria-label="Open shopping assistant"
+          >
+            <svg className={styles.icon}>
+              <use href={`${icons}#icon-sparkles`} />
+            </svg>
+          </button>
+
+          <button
             className={styles.themeToggleBtn}
             onClick={toggleTheme}
             aria-label="Toggle theme"
@@ -132,7 +144,16 @@ export const Header: React.FC = () => {
         </div>
       </header>
 
-      <MobileMenu isOpen={isOpen} onClose={handleToggleMenu} />
+      <MobileMenu
+        isOpen={isOpen}
+        onClose={handleToggleMenu}
+        onOpenAssistant={() => setIsAssistantOpen(true)}
+      />
+
+      <Assistant
+        isOpen={isAssistantOpen}
+        onClose={() => setIsAssistantOpen(false)}
+      />
     </>
   );
 };

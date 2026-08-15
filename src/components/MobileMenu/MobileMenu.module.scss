@@ -85,6 +85,30 @@
   gap: 24px;
 }
 
+// Matches .mobileMenuNavLink, but it's a <button> (opens the assistant
+// panel) rather than a route link.
+.assistantLink {
+  color: var(--gray-secondary);
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 11px;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 27px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    color: var(--text-color);
+  }
+}
+
 .mobileMenuNavLink {
   color: var(--gray-secondary);
   text-transform: uppercase;

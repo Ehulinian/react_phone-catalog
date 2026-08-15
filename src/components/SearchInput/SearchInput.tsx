@@ -70,7 +70,9 @@ export const SearchInput: React.FC<Props> = ({ category }) => {
         onChange={e => setLocalValue(e.target.value)}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        placeholder={`Search in ${category}...`}
+        // Collapsed, the field is just an icon button — a placeholder would
+        // bleed out from under the magnifier.
+        placeholder={isExpanded ? `Search in ${category}...` : ''}
         className={styles.headerSearchInput}
       />
     </div>

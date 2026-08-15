@@ -9,6 +9,7 @@ import { useTheme } from '../../store/ThemeContext';
 type MobileMenuProps = {
   isOpen: boolean;
   onClose: () => void;
+  onOpenAssistant: () => void;
 };
 
 const getNavLinkClassName = ({ isActive }: { isActive: boolean }) =>
@@ -16,7 +17,11 @@ const getNavLinkClassName = ({ isActive }: { isActive: boolean }) =>
     ? `${styles.mobileMenuNavLink} ${styles.active}`
     : styles.mobileMenuNavLink;
 
-export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
+export const MobileMenu: React.FC<MobileMenuProps> = ({
+  isOpen,
+  onClose,
+  onOpenAssistant,
+}) => {
   const cart = useAppSelector(state => state.cart.items);
   const favorites = useAppSelector(state => state.favorites.items);
 
@@ -50,6 +55,17 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
         >
           Accessories
         </NavLink>
+
+        <button
+          type="button"
+          className={styles.assistantLink}
+          onClick={() => {
+            onClose();
+            onOpenAssistant();
+          }}
+        >
+          Ask AI
+        </button>
       </nav>
 
       <div className={styles.mobileMenuIconWrapper}>
