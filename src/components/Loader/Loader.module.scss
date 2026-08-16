@@ -1,50 +1,53 @@
 @import '../../styles/variables';
 
+// Inline by default: fills the page body while the shell around it stays
+// interactive. Only the initial app boot uses the full-screen overlay.
+// The tall min-height keeps it optically centred in the viewport between
+// the header and the footer, instead of sitting just under the header.
 .loaderContainer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  min-height: 65vh;
   color: var(--loader-color);
+}
+
+.fullScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  min-height: 0;
+  background: var(--page-bg);
   z-index: 10000;
 }
 
+// The logo is drawn with filled paths, not stroked ones, so the previous
+// stroke-dasharray "draw" animation had nothing to animate — only the
+// opacity pulse was ever visible. This keeps the pulse and adds a subtle
+// scale so the wordmark reads as "working" rather than "frozen".
 .loaderContainer svg {
-  stroke: none;
-  stroke-width: 4;
-  fill: none;
-  animation:
-    draw 2s ease-in-out infinite,
-    blink 1s step-start infinite;
-  stroke-dasharray: 3000;
-  stroke-dashoffset: 3000;
   color: var(--loader-color);
+  animation: pulse 1.4s ease-in-out infinite;
 }
 
-.loaderContainer svg path {
-  transition: opacity 0.5s ease;
-}
-
-@keyframes draw {
-  0% {
-    stroke-dashoffset: 3000;
-  }
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes blink {
+@keyframes pulse {
   0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.98);
+  }
+
   50% {
     opacity: 1;
+    transform: scale(1);
   }
-  51%,
-  100% {
-    opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loaderContainer svg {
+    animation: none;
+    opacity: 0.8;
   }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { ProductCard } from '../ProductCard';
 import { Product } from '../../types/Product';
 import styles from './ProductList.module.scss';
@@ -14,6 +14,7 @@ export const ProductList: React.FC<ProductListProps> = ({
   filteredProducts,
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const listRef = useRef<HTMLDivElement>(null);
 
   const pageParam = +(searchParams.get('page') || 1);
   const perPage = +(searchParams.get('perPage') || PerPageOption.Sixteen);
@@ -58,6 +59,11 @@ export const ProductList: React.FC<ProductListProps> = ({
       ...Object.fromEntries(searchParams),
       page: newPage.toString(),
     });
+
+    // The pagination controls sit below the grid, so without this the user
+    // stays at the bottom and sees the end of the next page rather than its
+    // start. The route doesn't change here, so useScrollToTop won't fire.
+    listRef.current?.scrollIntoView({ block: 'start' });
   };
 
   const isRegularShow = visibleProducts.some(
@@ -65,7 +71,7 @@ export const ProductList: React.FC<ProductListProps> = ({
   );
 
   return (
-    <div className={styles.phonesContainer}>
+    <div className={styles.phonesContainer} ref={listRef}>
       {visibleProducts.length > 0 ? (
         <div className={styles.phonesWrapper}>
           {visibleProducts.map(product => (

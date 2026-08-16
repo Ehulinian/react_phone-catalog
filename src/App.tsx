@@ -2,24 +2,14 @@ import { Outlet } from 'react-router-dom';
 import './App.scss';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
-import { Loader } from './components/Loader';
-import { useGetProductsQuery } from './store/products/productsApi';
+import { useScrollToTop } from './hooks/useScrollToTop';
 
+// The shell renders immediately. Loading and error states belong to the
+// pages that actually need catalogue data — blocking everything here made
+// /cart and /favorites wait on a fetch they don't depend on, since their
+// data comes from localStorage.
 export const App = () => {
-  const { isLoading, isError } = useGetProductsQuery();
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (isError) {
-    return (
-      <div className="loadErrorMessage">
-        Something went wrong while loading the catalog. Please refresh the page
-        or try again later.
-      </div>
-    );
-  }
+  useScrollToTop();
 
   return (
     <>

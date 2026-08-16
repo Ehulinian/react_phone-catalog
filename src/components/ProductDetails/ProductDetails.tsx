@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Product, ProductSpecs } from '../../types/Product';
 import styles from './ProductDetails.module.scss';
@@ -41,10 +41,21 @@ export const ProductDetails: React.FC<Props> = ({
 
   const navigate = useNavigate();
 
+  // Switching colour or capacity navigates to a different variant of the
+  // same product, so the component re-renders — but the user is looking at
+  // the selectors partway down the page. Only jump to the top when this is
+  // actually a different product (a new namespaceId).
+  const previousNamespaceId = useRef<string | null>(null);
+
   useEffect(() => {
     setCurrentVariant(productDetails);
     setDisplayedImageIndex(0);
-    window.scrollTo({ top: 0 });
+
+    if (previousNamespaceId.current !== productDetails.namespaceId) {
+      window.scrollTo({ top: 0 });
+    }
+
+    previousNamespaceId.current = productDetails.namespaceId;
   }, [productDetails]);
 
   const isFavorite = favorites.some(fav => fav.id === product.id);

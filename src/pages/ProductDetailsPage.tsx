@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { ProductDetails } from '../components/ProductDetails/ProductDetails';
-import { Loader } from '../components/Loader';
 import { Container } from '../components/Container';
+import { DataState } from '../components/DataState';
 import {
   useGetCategoryProductsQuery,
   useGetProductsQuery,
@@ -14,14 +14,21 @@ import { getSuggestedProducts } from '../utils/getSuggestedProducts';
 export const ProductDetailsPage = () => {
   const location = useLocation();
   const { productId } = useParams<{ productId: string }>();
-  const { data: products = [] } = useGetProductsQuery();
 
   const category = location.pathname.split('/')[1];
 
   const {
+    data: products = [],
+    isLoading: isLoadingProducts,
+    isError: isProductsError,
+    refetch: refetchProducts,
+  } = useGetProductsQuery();
+
+  const {
     data: productsDetails = [],
-    isLoading,
-    isError,
+    isLoading: isLoadingDetails,
+    isError: isDetailsError,
+    refetch: refetchDetails,
   } = useGetCategoryProductsQuery(category, { skip: !category });
 
   const product = products.find(item => item.itemId === productId);
@@ -31,39 +38,47 @@ export const ProductDetailsPage = () => {
     return getSuggestedProducts(products, selectedProduct, 6);
   }, [products, selectedProduct]);
 
-  const { name } = selectedProduct || {};
+  const isLoading = isLoadingProducts || isLoadingDetails;
+  const isError = isProductsError || isDetailsError;
 
-  const showProductDetails = !isLoading && selectedProduct && product;
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (isError) {
+  if (isLoading || isError) {
     return (
       <Container>
-        <p>
-          Something went wrong while loading this product. Please try again.
-        </p>
+        <DataState
+          isLoading={isLoading}
+          isError={isError}
+          onRetry={() => {
+            refetchProducts();
+            refetchDetails();
+          }}
+          message="Couldn't load this product. Check your connection and retry."
+        />
+      </Container>
+    );
+  }
+
+  // Loaded successfully, but nothing matches this URL — a wrong or stale
+  // product id rather than a network problem.
+  if (!selectedProduct || !product) {
+    return (
+      <Container>
+        <Breadcrumbs />
+        <p className="notFoundMessage">Product was not found</p>
       </Container>
     );
   }
 
   return (
-    <>
-      <Container>
-        <Breadcrumbs name={name} />
+    <Container>
+      <Breadcrumbs name={selectedProduct.name} />
 
-        {showProductDetails && (
-          <ProductDetails
-            productDetails={selectedProduct}
-            product={product}
-            productVariants={productsDetails}
-          />
-        )}
+      <ProductDetails
+        productDetails={selectedProduct}
+        product={product}
+        productVariants={productsDetails}
+      />
 
-        <RecommendedProducts recommendedProducts={recommendedProducts} />
-      </Container>
-    </>
+      <RecommendedProducts recommendedProducts={recommendedProducts} />
+    </Container>
   );
 };
